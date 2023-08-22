@@ -7,6 +7,9 @@ import com.product.ecommerce.entity.Product;
 import com.product.ecommerce.exception.ProductNotFoundException;
 import com.product.ecommerce.repo.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +36,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CachePut(cacheNames = "products", key = "'all-product-list'")
 
     public List<ProductResponseDto> getAllProduct() {
         List<Product> products = productRepo.findAll();
@@ -44,12 +48,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CachePut(cacheNames = "product", key="#id")
     public Optional<Product> getProductById(Long id) {
 
         return productRepo.findById(id);
     }
 
     @Override
+    @CachePut(cacheNames = "products", key="#product.productId")
     public Product updateProduct(Product product){
         if(productRepo.existsById(product.getProductId())){
             Product existingProduct = productRepo.getById(product.getProductId());
@@ -64,6 +70,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "products", key = "#productId")
     public void deleteProductById(Long productId) {
         productRepo.deleteById(productId);
 

@@ -29,7 +29,7 @@ public class MapperImpl implements Mapper {
         ProductResponseDto productResponseDto=new ProductResponseDto();
         productResponseDto.setProductId(product.getProductId());
         productResponseDto.setProductName(product.getProductName());
-        productResponseDto.setProductPrice(productResponseDto.getProductPrice());////////
+        productResponseDto.setProductPrice(product.getProductPrice());////////
         productResponseDto.setProductQuantity(product.getProductQuantity());
         productResponseDto.setTotalPrice(product.getProductPrice()*product.getProductQuantity());
         return productResponseDto;
