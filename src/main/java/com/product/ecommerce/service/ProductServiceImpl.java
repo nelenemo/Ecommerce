@@ -7,6 +7,7 @@ import com.product.ecommerce.entity.Product;
 import com.product.ecommerce.exception.ProductNotFoundException;
 import com.product.ecommerce.repo.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -48,9 +49,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @CachePut(cacheNames = "product", key="#id")
+    @Cacheable(cacheNames = "product", key="#id")
     public Optional<Product> getProductById(Long id) {
-
+        System.out.println("This is the code" );
         return productRepo.findById(id);
     }
 
@@ -70,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @CacheEvict(cacheNames = "products", key = "#productId")
+//    @CacheEvict(cacheNames = "products", key = "#productId")
     public void deleteProductById(Long productId) {
         productRepo.deleteById(productId);
 

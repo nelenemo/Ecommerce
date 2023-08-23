@@ -2,11 +2,14 @@ package com.product.ecommerce.service;
 
 import com.product.ecommerce.dto.UserRequestDto;
 import com.product.ecommerce.entity.User;
+//import com.product.ecommerce.repo.UserRepo;
 import com.product.ecommerce.repo.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -18,11 +21,21 @@ public class UserServiceImpl implements UserService{
     private PasswordEncoder passwordEncoder;
 
 
+
     @Override
     public void addUsers(UserRequestDto userRequestDto) {
         userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
         User map = mapper.map(userRequestDto, User.class);
         userRepo.save(map);
 
+    }
+
+
+
+
+
+    @Override
+    public Optional<User> findUserById(Long userId) {
+        return userRepo.findById(userId);
     }
 }

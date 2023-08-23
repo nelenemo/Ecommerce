@@ -1,0 +1,49 @@
+    maxEntriesLocalHeap:
+        This attribute specifies the maximum number of cache entries that can be stored in the cache's local memory (heap).
+        When this limit is reached, adding new entries to the cache might trigger the eviction of existing entries to make space for the new ones.
+        The eviction policy determines which entries are removed when the cache reaches its maximum size in memory.
+        This attribute is useful for controlling memory usage and preventing the cache from consuming too much memory.
+
+    maxEntriesLocalDisk:
+        This attribute specifies the maximum number of cache entries that can be stored in the cache's local disk storage.
+        When this limit is reached, adding new entries to the cache might trigger the eviction of existing entries from the disk storage to make space for the new ones.
+        Similar to the in-memory cache, the eviction policy determines which entries are removed from disk when the cache reaches its maximum size on disk.
+        This attribute is helpful for managing disk space usage and ensuring that the cache doesn't consume excessive storage.
+
+Here's an example to illustrate:
+
+Suppose you set maxEntriesLocalHeap="10000" and maxEntriesLocalDisk="1000":
+
+    The in-memory cache (heap) can store up to 10,000 entries. Once this limit is reached, adding new entries might lead to the eviction of existing in-memory entries based on the eviction policy you've configured (e.g., least recently used, least frequently used, etc.).
+
+    The on-disk cache can store up to 1,000 entries. Once this limit is reached, adding new entries might lead to the eviction of existing entries from disk storage. Note that the in-memory cache and on-disk cache are separate, so eviction from one doesn't necessarily imply eviction from the other.
+
+These attributes help you manage the cache's capacity and prevent it from consuming excessive resources while ensuring that the most relevant and frequently used data remains available. It's important to choose appropriate values for these attributes based on your application's memory and storage requirements.
+
+
+
+    timeToIdleSeconds:
+        This attribute specifies the maximum amount of time, in seconds, that an entry (or data) can remain in the cache without being accessed.
+        If an entry is not accessed (read or updated) within the specified time interval, it is considered idle.
+        Once an entry becomes idle, it becomes eligible for eviction from the cache. Eviction means that the entry is removed from the cache to make space for new data.
+        This attribute is helpful for automatically removing data that is no longer actively used to free up memory space.
+
+    timeToLiveSeconds:
+        This attribute specifies the maximum amount of time, in seconds, that an entry is allowed to remain in the cache, regardless of whether it has been accessed or not.
+        If an entry's "time to live" duration has passed, the entry is considered expired.
+        Expired entries are removed from the cache during cache maintenance processes to ensure that stale data is not served.
+        This attribute is useful for ensuring that cached data remains fresh and up-to-date by removing old data.
+
+
+            <diskStore> Configuration:
+                When you include the <diskStore> configuration in your Ehcache XML, such as <diskStore path="C:\\JAVA_PROJECT\\cache" />, it specifies a path on your local disk where cache data will be stored.
+                Cached data will be persisted to disk in this location, and it will survive application restarts. This is a form of disk-based persistence.
+
+            In-Memory Caching:
+                In-memory caching, also known as on-heap caching, stores data in the application's memory (RAM) for fast access.
+                Data stored in the Java heap is accessible very quickly compared to data stored on disk.
+                However, this type of cache is volatile; data is lost if the application is shut down or restarted.
+
+            Combining Both:
+                You can indeed combine both types of caching. If you include both the <diskStore> configuration and use in-memory caching, your cache data will be stored in two places: on disk and in memory.
+                This combination offers both benefits: the performance of in-memory access and the persistence of disk storage.
